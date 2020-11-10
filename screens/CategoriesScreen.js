@@ -1,12 +1,41 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import CategoryGridItem from "../components/CategoryGridItem";
+import { CATEGORIES } from "../data/dummy-data";
 
-const CategoriesScreen = () => {
+const CategoriesScreen = ({ navigation }) => {
+  const renderGridItem = (itemData) => {
+    return (
+      <CategoryGridItem
+        onSelect={() =>
+          navigation.navigate("CategoryMeals", {
+            categoryId: itemData.item.id,
+          })
+        }
+        title={itemData.item.title}
+        color={itemData.item.color}
+      />
+    );
+  };
+
   return (
-    <View style={styles.screen}>
-      <Text> Categories Screen </Text>
-    </View>
+    <FlatList
+      keyExtractor={(item, index) => item.id}
+      data={CATEGORIES}
+      renderItem={renderGridItem}
+      numColumns={2}
+    />
   );
+};
+
+CategoriesScreen.navigationOptions = {
+  headerTitle: "Meal Categories",
 };
 
 export default CategoriesScreen;
